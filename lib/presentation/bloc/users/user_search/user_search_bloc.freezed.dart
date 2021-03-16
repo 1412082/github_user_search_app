@@ -103,8 +103,8 @@ class __$ChangeQueryCopyWithImpl<$Res>
 }
 
 /// @nodoc
-class _$_ChangeQuery implements _ChangeQuery {
-  const _$_ChangeQuery({this.newQuery});
+class _$_ChangeQuery extends _ChangeQuery {
+  const _$_ChangeQuery({this.newQuery}) : super._();
 
   @override
   final String newQuery;
@@ -183,7 +183,8 @@ class _$_ChangeQuery implements _ChangeQuery {
   }
 }
 
-abstract class _ChangeQuery implements UserSearchEvent {
+abstract class _ChangeQuery extends UserSearchEvent {
+  const _ChangeQuery._() : super._();
   const factory _ChangeQuery({String newQuery}) = _$_ChangeQuery;
 
   String get newQuery;
@@ -211,8 +212,8 @@ class __$ClearQueryCopyWithImpl<$Res>
 }
 
 /// @nodoc
-class _$_ClearQuery implements _ClearQuery {
-  const _$_ClearQuery();
+class _$_ClearQuery extends _ClearQuery {
+  const _$_ClearQuery() : super._();
 
   @override
   String toString() {
@@ -278,7 +279,8 @@ class _$_ClearQuery implements _ClearQuery {
   }
 }
 
-abstract class _ClearQuery implements UserSearchEvent {
+abstract class _ClearQuery extends UserSearchEvent {
+  const _ClearQuery._() : super._();
   const factory _ClearQuery() = _$_ClearQuery;
 }
 

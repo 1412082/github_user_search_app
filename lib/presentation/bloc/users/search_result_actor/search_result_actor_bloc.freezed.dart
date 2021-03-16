@@ -256,7 +256,7 @@ class _$SearchResultActorStateTearOff {
   const _$SearchResultActorStateTearOff();
 
 // ignore: unused_element
-  _Initial inital() {
+  _Initial initial() {
     return const _Initial();
   }
 }
@@ -269,20 +269,20 @@ const $SearchResultActorState = _$SearchResultActorStateTearOff();
 mixin _$SearchResultActorState {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
-    @required TResult inital(),
+    @required TResult initial(),
   });
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
-    TResult inital(),
+    TResult initial(),
     @required TResult orElse(),
   });
   @optionalTypeArgs
   TResult map<TResult extends Object>({
-    @required TResult inital(_Initial value),
+    @required TResult initial(_Initial value),
   });
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
-    TResult inital(_Initial value),
+    TResult initial(_Initial value),
     @required TResult orElse(),
   });
 }
@@ -327,7 +327,7 @@ class _$_Initial implements _Initial {
 
   @override
   String toString() {
-    return 'SearchResultActorState.inital()';
+    return 'SearchResultActorState.initial()';
   }
 
   @override
@@ -341,21 +341,21 @@ class _$_Initial implements _Initial {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object>({
-    @required TResult inital(),
+    @required TResult initial(),
   }) {
-    assert(inital != null);
-    return inital();
+    assert(initial != null);
+    return initial();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
-    TResult inital(),
+    TResult initial(),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
-    if (inital != null) {
-      return inital();
+    if (initial != null) {
+      return initial();
     }
     return orElse();
   }
@@ -363,21 +363,21 @@ class _$_Initial implements _Initial {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object>({
-    @required TResult inital(_Initial value),
+    @required TResult initial(_Initial value),
   }) {
-    assert(inital != null);
-    return inital(this);
+    assert(initial != null);
+    return initial(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
-    TResult inital(_Initial value),
+    TResult initial(_Initial value),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
-    if (inital != null) {
-      return inital(this);
+    if (initial != null) {
+      return initial(this);
     }
     return orElse();
   }

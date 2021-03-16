@@ -1,9 +1,12 @@
 import 'package:github_user_search_app/domain/core/errors.dart';
 import 'package:github_user_search_app/domain/users/i_user_repository.dart';
 import 'package:github_user_search_app/domain/users/user.dart';
+import 'package:github_user_search_app/domain/users/user_profile.dart';
 import 'package:github_user_search_app/infrastructure/core/network/network.dart';
+import 'package:github_user_search_app/infrastructure/requests/get_user_profile_request.dart';
 import 'package:github_user_search_app/infrastructure/requests/search_user_request.dart';
 import 'package:github_user_search_app/infrastructure/users/user_dtos.dart';
+import 'package:github_user_search_app/infrastructure/users/user_profile_dtos.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
@@ -27,6 +30,20 @@ class UserRepository implements IUserRepository {
       if (hasConnection) {
         final searchRequest = SearchUserRequest(searchCriteria: query);
         return _networkRequestLoader.loadRequest(searchRequest).flatMap(_flatMapListDtoToDomain);
+      } else {
+        return Stream.error(NoNetworkConnectionError());
+      }
+    });
+  }
+
+  @override
+  Stream<UserProfile> getUserProfile({String username}) {
+    return _networkConnectionChecker.hasConnection().asStream().flatMap((hasConnection) {
+      if (hasConnection) {
+        final getUserProfileRequest = GetUserProfileRequest(username: username);
+        return _networkRequestLoader
+            .loadRequest(getUserProfileRequest)
+            .flatMap((data) => Stream.value(data.toDomain()));
       } else {
         return Stream.error(NoNetworkConnectionError());
       }

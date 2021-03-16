@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,10 @@ import 'package:github_user_search_app/injectable.dart';
 import 'package:github_user_search_app/presentation/bloc/users/search_result_actor/search_result_actor_bloc.dart';
 import 'package:github_user_search_app/presentation/bloc/users/user_search/user_search_bloc.dart';
 import 'package:github_user_search_app/presentation/bloc/users/user_search/user_search_result_view_model.dart';
+import 'package:github_user_search_app/presentation/routes/route_index.dart';
 import 'package:github_user_search_app/presentation/screens/search/widgets/search_bar.dart';
+import 'package:github_user_search_app/presentation/screens/search/widgets/user_avatar_widget.dart';
+import 'package:github_user_search_app/presentation/screens/user_profile/user_profile_screen.dart';
 import 'package:shimmer/shimmer.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -39,7 +43,7 @@ class _SearchScreenState extends State<SearchScreen> {
               brightness: Brightness.light,
               centerTitle: true,
               title: const Text(
-                'Seach github profile',
+                'Seach GitHub',
                 style: TextStyle(color: Colors.black),
               ),
               bottom: SearchBar(
@@ -127,75 +131,37 @@ class _SearchScreenState extends State<SearchScreen> {
   /// Build friend cell
   Widget _buildSearchResultCell(
       {double cellHeight = 75, double avatarSize = AVATAR_SIZE, UserSearchResultViewModel viewModel}) {
-    return Container(
-      height: cellHeight,
-      width: double.infinity,
-      color: Colors.white,
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(left: SIDE_PADDING, right: SIDE_PADDING),
-            clipBehavior: Clip.hardEdge,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-            ),
-            child: _avatarFrom(viewModel: viewModel, avatarSize: avatarSize),
-          ),
-          Expanded(
-            child: Text(
-              viewModel.fullName,
-              style: const TextStyle(color: Colors.black),
-            ),
-          ),
-        ],
+    return GestureDetector(
+      onTap: () => ExtendedNavigator.of(context).push(
+        Routes.userProfileScreen,
+        arguments: UserProfileScreenArguments(userViewModel: viewModel),
       ),
-    );
-  }
-
-  /// Build avatar widget base on url store in server.
-  ///
-  /// If [url] is empty. Avatar will be text combined by first letters of [BuddyChallengeFriendsViewModel.firstName] and [BuddyChallengeFriendsViewModel.lastName].
-  Widget _avatarFrom({@required UserSearchResultViewModel viewModel, @required double avatarSize}) {
-    final nameShortcut = viewModel.nameShortcutDisplay;
-    final defaultAvatarWidget = Text(
-      nameShortcut,
-    );
-
-    final baseColor = Colors.black12;
-    const highlightColor = Colors.grey;
-
-    final avatarWidget = viewModel.avatarUrl?.isEmpty ?? true
-        ? defaultAvatarWidget
-        : CachedNetworkImage(
-            imageUrl: viewModel.avatarUrl,
-            imageBuilder: (context, imageProvider) => Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: imageProvider,
-                  fit: BoxFit.cover,
-//                  colorFilter: ColorFilter.mode(Colors.red, BlendMode.colorBurn),
-                ),
-              ),
-            ),
-            placeholder: (context, url) => Shimmer.fromColors(
-              baseColor: baseColor,
-              highlightColor: highlightColor,
-              child: CircleAvatar(
-                backgroundColor: Colors.grey,
-                minRadius: avatarSize,
-              ),
-            ),
-            errorWidget: (context, error, stackTrace) {
-              return defaultAvatarWidget;
-            },
-          );
-
-    return CircleAvatar(
-      minRadius: avatarSize,
-      maxRadius: avatarSize,
-      backgroundColor: Colors.grey,
       child: Container(
-        child: avatarWidget,
+        height: cellHeight,
+        width: double.infinity,
+        color: Colors.white,
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.only(left: SIDE_PADDING, right: SIDE_PADDING),
+              clipBehavior: Clip.hardEdge,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+              ),
+              child: UserAvatarWidget(
+                avatarSize: avatarSize,
+                nameShortcut: viewModel.nameShortcutDisplay,
+                avatarUrl: viewModel.avatarUrl,
+              ),
+            ),
+            Expanded(
+              child: Text(
+                viewModel.fullName,
+                style: const TextStyle(color: Colors.black),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

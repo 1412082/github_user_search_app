@@ -20,7 +20,8 @@ import 'infrastructure/core/network/requests/network_request_loader.dart'
 import 'infrastructure/users/user_repository.dart' as _i10;
 import 'presentation/bloc/users/search_result_actor/search_result_actor_bloc.dart'
     as _i11;
-import 'presentation/bloc/users/user_search/user_search_bloc.dart' as _i12;
+import 'presentation/bloc/users/user_profile/user_profile_bloc.dart' as _i12;
+import 'presentation/bloc/users/user_search/user_search_bloc.dart' as _i13;
 
 const String _prod = 'prod';
 const String _dev = 'dev';
@@ -60,7 +61,9 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i9.IUserRepository>(() => _i10.MockUserRepository(),
       registerFor: {_test});
   gh.factory<_i11.SearchResultActorBloc>(() => _i11.SearchResultActorBloc());
-  gh.factory<_i12.UserSearchBloc>(
-      () => _i12.UserSearchBloc(get<_i9.IUserRepository>()));
+  gh.factory<_i12.UserProfileBloc>(() => _i12.UserProfileBloc(
+      userRepository: get<_i9.IUserRepository>(), username: get<String>()));
+  gh.factory<_i13.UserSearchBloc>(
+      () => _i13.UserSearchBloc(get<_i9.IUserRepository>()));
   return get;
 }

@@ -10,7 +10,7 @@ part 'search_result_actor_bloc.freezed.dart';
 
 @injectable
 class SearchResultActorBloc extends Bloc<SearchResultActorEvent, SearchResultActorState> {
-  SearchResultActorBloc() : super(const SearchResultActorState.inital());
+  SearchResultActorBloc() : super(const SearchResultActorState.initial());
 
   @override
   Stream<SearchResultActorState> mapEventToState(

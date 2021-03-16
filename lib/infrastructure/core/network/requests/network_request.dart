@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 
 import 'package:github_user_search_app/infrastructure/core/log/logger.dart';
 import 'package:github_user_search_app/infrastructure/core/network/network.dart';
@@ -26,8 +25,6 @@ abstract class JsonNetworkRequest<T> extends NetworkRequest<T> {
     return Future.value(_factory(data));
   }
 }
-
-abstract class CustomDataNetworkRequest<T> extends NetworkRequest<T> {}
 
 class NetworkListData<T> {
   List<T> items;
@@ -57,10 +54,10 @@ abstract class ListNetworkRequest<T> extends NetworkRequest<NetworkListData<T>> 
     final list = data["items"];
     try {
       if (list is List && list != null && list.isNotEmpty) {
-        response.items = list.map((e) => _factory(e)).toList();
+        response.items = list.map((e) => _factory(e as Map<String, dynamic>)).toList();
       }
     } catch (e) {
-      Logger.logError("Parse response error: ${e}");
+      Logger.logError("Parse response error: $e");
     }
     return Future.value(response);
   }

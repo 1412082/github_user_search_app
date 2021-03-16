@@ -1,7 +1,8 @@
 part of 'user_search_bloc.dart';
 
 @freezed
-abstract class UserSearchEvent with _$UserSearchEvent {
+abstract class UserSearchEvent implements _$UserSearchEvent {
+  const UserSearchEvent._();
   const factory UserSearchEvent.changeQuery({String newQuery}) = _ChangeQuery;
 
   const factory UserSearchEvent.clearQuery() = _ClearQuery;
