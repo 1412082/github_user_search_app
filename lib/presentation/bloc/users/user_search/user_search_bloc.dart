@@ -22,6 +22,7 @@ class UserSearchBloc extends Bloc<UserSearchEvent, UserSearchState> {
   /// Stream to debounce search query changed event
   final _searchStreamController = StreamController<String>();
 
+  //
   StreamSubscription _searchSubscription;
 
   UserSearchBloc(this._userRepository) : super(const UserSearchState.initial()) {
@@ -40,26 +41,30 @@ class UserSearchBloc extends Bloc<UserSearchEvent, UserSearchState> {
   ) async* {
     yield* event.map(
         changeQuery: (changedEvent) async* {
+          yield const UserSearchState.searching();
           yield await _searchUser(query: changedEvent.newQuery);
         },
         clearQuery: (clearEvent) async* {});
   }
 
   /// Send query to debounced stream to prevent server spam.
-  void debounceQueryChangedEvent({String newQuery}) => _searchStreamController.sink.add(newQuery);
+  void debounceQueryChangedEvent({String newQuery}) =>
+      newQuery.isNotEmpty ? _searchStreamController.sink.add(newQuery) : null;
 
+  /// Handle search and return specific state base on response data.
   Future<UserSearchState> _searchUser({String query}) {
     final completer = Completer<UserSearchState>();
-    _searchSubscription = _userRepository.searchUsers(query: query).doOnListen(() {
-      var a;
-    }).doOnDone(() {
-      var a;
-    }).doOnData(
-      (listUser) {
-        completer.complete(UserSearchState.firstLoaded(
-            list: listUser.map((user) => UserSearchResultViewModel.fromDomain(domainUser: user)).toList()));
-      },
-    ).doOnError(
+    _searchSubscription = _userRepository.searchUsers(query: query).doOnData((listUser) {
+      if (listUser.isEmpty) {
+        completer.complete(UserSearchState.notFound(query: query));
+      } else {
+        completer.complete(
+          UserSearchState.firstLoaded(
+            list: listUser.map((user) => UserSearchResultViewModel.fromDomain(domainUser: user)).toList(),
+          ),
+        );
+      }
+    }).doOnError(
       (error, stacktrace) {
         completer.complete(UserSearchState.notFound(query: query));
       },

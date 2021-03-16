@@ -38,14 +38,17 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
               brightness: Brightness.light,
               centerTitle: true,
-              title: const Text('Seach github profile'),
+              title: const Text(
+                'Seach github profile',
+                style: TextStyle(color: Colors.black),
+              ),
               bottom: SearchBar(
                 backgroundColor: Colors.grey,
-                hintText: 'Type ...',
-                // hintTextStyle: this._theme.typographies.descriptionText1().textStyle,
+                hintText: 'Type a name ...',
+                // hintTextStyle: ,
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: const Icon(Icons.clear),
-                // queryTextStyle: this._theme.typographies.descriptionText1().textStyle,
+                // queryTextStyle: ,
                 onSearchQueryChanged: (query) =>
                     BlocProvider.of<UserSearchBloc>(context).debounceQueryChangedEvent(newQuery: query),
                 onCancelSearch: () {},
@@ -72,6 +75,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 color: Colors.white,
                                 padding: const EdgeInsets.only(left: 85),
                                 child: const Divider(
+                                  color: Colors.grey,
                                   height: 1,
                                 ),
                               ),
@@ -108,8 +112,13 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget _buildNotFoundWidget(String query) {
     return SafeArea(
       child: Center(
-        child: Text(
-          'Nothing found for input $query',
+        child: Padding(
+          padding: const EdgeInsets.all(SIDE_PADDING),
+          child: Text(
+            'Nothing found for input "$query"',
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 16),
+          ),
         ),
       ),
     );
@@ -135,6 +144,7 @@ class _SearchScreenState extends State<SearchScreen> {
           Expanded(
             child: Text(
               viewModel.fullName,
+              style: const TextStyle(color: Colors.black),
             ),
           ),
         ],
