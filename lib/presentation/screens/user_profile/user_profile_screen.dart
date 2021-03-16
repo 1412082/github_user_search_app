@@ -97,20 +97,20 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               spacing: 10,
                               children: [
                                 // Name
-                                Text(
-                                  loadedState.profile.name,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
+                                if (loadedState.profile.name != null && loadedState.profile.name.isNotEmpty)
+                                  Text(
+                                    loadedState.profile.name,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
                                 // Username
                                 Text(
                                   args.userViewModel.fullName,
                                   style: const TextStyle(color: Colors.grey, fontSize: 20),
                                 ),
-
                                 const SizedBox(
                                   height: 10,
                                 ),
