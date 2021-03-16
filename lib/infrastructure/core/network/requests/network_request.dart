@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:github_user_search_app/infrastructure/core/log/logger.dart';
 import 'package:github_user_search_app/infrastructure/core/network/network.dart';
 
 /// General abstraction of http request.
@@ -53,15 +54,15 @@ abstract class ListNetworkRequest<T> extends NetworkRequest<NetworkListData<T>> 
   @override
   Future<NetworkListData<T>> parseData(Map<String, dynamic> data) {
     final response = NetworkListData<T>();
-    //TODO: handle parse data
-    // final list = data["_items"];
-    // try {
-    //   if (list is List && list != null && list.isNotEmpty) {
-    //     response.items = list.map((e) => _factory(e)).toList();
-    //   }
-    // } catch (e) {
-    //   FSLog.fsLogError(() => "Parse response error: ${e}");
-    // }
+    //TODO: handleparse data
+    final list = data["items"];
+    try {
+      if (list is List && list != null && list.isNotEmpty) {
+        response.items = list.map((e) => _factory(e)).toList();
+      }
+    } catch (e) {
+      Logger.logError("Parse response error: ${e}");
+    }
     return Future.value(response);
   }
 }

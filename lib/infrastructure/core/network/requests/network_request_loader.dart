@@ -13,7 +13,7 @@ import 'package:mockito/mockito.dart';
 @dev
 @LazySingleton(as: INetworkRequestLoader)
 class NetworkRequestLoader implements INetworkRequestLoader {
-  final NetworkExecutor _executor;
+  final INetworkExecutor _executor;
   final Map<String, INetworkRequestLoaderObserver> _observers = <String, INetworkRequestLoaderObserver>{};
 
   NetworkRequestLoader(this._executor);
@@ -26,7 +26,11 @@ class NetworkRequestLoader implements INetworkRequestLoader {
       _executor.requestWith(request).asStream().listen((response) {
         _parseResponse(response, api, controller);
       }, onError: (e) {
-        _parseResponse(e.response as Response, api, controller);
+        try {
+          _parseResponse(e.response as Response, api, controller);
+        } catch (exception) {
+          _parseResponse(null, api, controller);
+        }
       });
     });
     return controller.stream;
@@ -114,7 +118,7 @@ class NetworkRequestLoader implements INetworkRequestLoader {
           _notifyObserver(networkError);
         }
       } else {
-        final networkError = NetworkError(statusCode: -1, message: "");
+        final networkError = NetworkError.noNetwork();
         controller.addError(networkError);
         _notifyObserver(networkError);
       }

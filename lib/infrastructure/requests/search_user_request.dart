@@ -10,7 +10,7 @@ class SearchUserRequest extends ListNetworkRequest<UserDto> {
   @override
   Future<Request> makeRequest() async => Request(
         url: '/search/users',
-        queries: {
+        parameters: {
           'q': searchCriteria,
         },
         method: HttpMethod.get,

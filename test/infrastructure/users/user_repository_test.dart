@@ -34,6 +34,10 @@ void main() {
   // Network loader by pass setup
   void setupNetworkLoaderSuccess<T>({T value}) =>
       when(networkRequestLoader.loadRequest(any)).thenAnswer((realInvocation) => Stream<T>.value(value));
+
+  void setupNetworkLoaderTimeOut<T>() => when(networkRequestLoader.loadRequest(any)).thenAnswer(
+      (realInvocation) => Future<T>.delayed(const Duration(minutes: 1), () => Future<T>.value()).asStream());
+
   void setupNetworkLoaderFail<T>({dynamic error}) =>
       when(networkRequestLoader.loadRequest(any)).thenAnswer((realInvocation) => Stream<T>.error(error));
 
@@ -75,6 +79,5 @@ void main() {
       // assert
       expect(searchStream, emits(equals(List<User>.empty()))); // Should response empty list.
     }, timeout: const Timeout(Duration(seconds: 3)));
-
   });
 }

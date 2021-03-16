@@ -82,13 +82,13 @@ abstract class ApiClient {
     }
 
     return _request(
-            url: request.url,
-            method: request.method,
-            parameters: request.parameters,
-            additionalHeaders: request.headers,
-            cancelToken: _cancelToken,
-            options: options)
-        .catchError((e) {
+      url: request.url,
+      method: request.method,
+      parameters: request.parameters,
+      additionalHeaders: request.headers,
+      cancelToken: _cancelToken,
+      options: options,
+    ).catchError((e) {
       Logger.logError('Request fail to api ${request.url}');
       return Future.error(e);
     });
