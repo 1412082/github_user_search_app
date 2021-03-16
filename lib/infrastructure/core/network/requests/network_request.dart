@@ -54,7 +54,6 @@ abstract class ListNetworkRequest<T> extends NetworkRequest<NetworkListData<T>> 
   @override
   Future<NetworkListData<T>> parseData(Map<String, dynamic> data) {
     final response = NetworkListData<T>();
-    //TODO: handleparse data
     final list = data["items"];
     try {
       if (list is List && list != null && list.isNotEmpty) {
