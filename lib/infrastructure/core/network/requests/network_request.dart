@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:github_user_search_app/infrastructure/network/requests/request.dart';
+import 'package:github_user_search_app/infrastructure/core/network/network.dart';
 
 /// General abstraction of http request.
 abstract class NetworkRequest<T> {
@@ -31,7 +31,10 @@ abstract class CustomDataNetworkRequest<T> extends NetworkRequest<T> {}
 class NetworkListData<T> {
   List<T> items;
 
-  NetworkListData({List<T> items}): items = List.from(items ?? []);
+  NetworkListData({List<T> items}) : items = List.from(items ?? []);
+
+  /// Create network list data with no [items]. Usually use for test.
+  factory NetworkListData.empty() => NetworkListData(items: []);
 
   void append(List<T> newResults) {
     items.addAll(newResults);
@@ -39,13 +42,13 @@ class NetworkListData<T> {
 }
 
 abstract class ListNetworkRequest<T> extends NetworkRequest<NetworkListData<T>> {
+  /// Limit maximum items per request.
   int get maxItemPerRequest => 100;
 
-  T Function(Map<String, dynamic> data) _factory;
+  /// Parsing method that passing from outside.
+  final T Function(Map<String, dynamic> data) _factory;
 
-  ListNetworkRequest(T Function(Map<String, dynamic> data) factory) {
-    _factory = factory;
-  }
+  ListNetworkRequest(this._factory);
 
   @override
   Future<NetworkListData<T>> parseData(Map<String, dynamic> data) {
@@ -67,8 +70,5 @@ abstract class JsonMapNetworkRequest extends NetworkRequest<Map<String, dynamic>
   JsonMapNetworkRequest();
 
   @override
-  Future<Map<String, dynamic>> parseData(data) async {
-    return data;
-  }
+  Future<Map<String, dynamic>> parseData(Map<String, dynamic> data) async => data;
 }
-

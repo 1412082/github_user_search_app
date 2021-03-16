@@ -1,22 +1,13 @@
 import 'package:data_connection_checker/data_connection_checker.dart';
+import 'package:github_user_search_app/infrastructure/core/network/base/i_network_connection_checker.dart';
+import 'package:injectable/injectable.dart';
+import 'package:mockito/mockito.dart';
 import 'package:rxdart/rxdart.dart';
 
-/// Represents the status of the data connection.
-/// Returned by [DataConnectionChecker.connectionStatus]
-enum NetworkConnectionStatus {
-  disconnected,
-  connected,
-}
-
-abstract class NetworkConnectionProtocol {
-  /// Check if has connection to the internet.
-  Future<bool> hasConnection();
-
-  /// Stream of status changed
-  Stream<NetworkConnectionStatus> get onStatusChange;
-}
-
-class NetworkConnection extends NetworkConnectionProtocol {
+@prod
+@dev
+@LazySingleton(as: INetworkConnectionChecker)
+class NetworkConnectionChecker extends INetworkConnectionChecker {
   @override
   Future<bool> hasConnection() => DataConnectionChecker().hasConnection;
 
@@ -24,6 +15,10 @@ class NetworkConnection extends NetworkConnectionProtocol {
   Stream<NetworkConnectionStatus> get onStatusChange =>
       DataConnectionChecker().onStatusChange.flatMap((value) => Stream.value(_convertDataConnectionStatus(value)));
 }
+
+@test
+@LazySingleton(as: INetworkConnectionChecker)
+class MockNetworkConnectionChecker extends Mock implements INetworkConnectionChecker {}
 
 NetworkConnectionStatus _convertDataConnectionStatus(DataConnectionStatus status) {
   switch (status) {

@@ -1,14 +1,12 @@
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/foundation.dart';
-import 'package:github_user_search_app/infrastructure/log/logger.dart';
-import 'package:github_user_search_app/infrastructure/network/requests/request.dart';
-import 'package:injectable/injectable.dart';
+import 'package:github_user_search_app/infrastructure/core/log/logger.dart';
+import 'package:github_user_search_app/infrastructure/core/network/network.dart';
 
 enum HttpMethod { get, post }
 
-/// Http client wrapper.
-@injectable
-class ApiClient {
+/// Http client base class wrapper. Not for use.
+abstract class ApiClient {
   /// Base url to server.
   ///
   /// E.x: https://api.github.com

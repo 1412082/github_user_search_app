@@ -6,13 +6,16 @@ part 'user_dtos.freezed.dart';
 part 'user_dtos.g.dart';
 
 @freezed
-abstract class UserDto with _$UserDto {
+abstract class UserDto implements _$UserDto {
+
   const factory UserDto({
     @JsonKey(name: 'login') String userName,
     @JsonKey(name: 'avatar_url') String avatarUrl,
     String url,
     @JsonKey(name: 'html_url') String htmlUrl,
   }) = _UserDto;
+
+  const UserDto._();
 
   factory UserDto.fromJson(Map<String, dynamic> json) => _$UserDtoFromJson(json);
 

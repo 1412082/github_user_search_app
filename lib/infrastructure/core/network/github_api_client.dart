@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart' as dio;
-import 'package:github_user_search_app/infrastructure/log/logger.dart';
-import 'package:github_user_search_app/infrastructure/network/dio/dio_github_interceptors.dart';
-import 'package:github_user_search_app/infrastructure/network/network.dart';
+import 'package:github_user_search_app/infrastructure/core/log/logger.dart';
+import 'package:github_user_search_app/infrastructure/core/network/dio/dio_github_interceptors.dart';
+import 'package:github_user_search_app/infrastructure/core/network/network.dart';
 import 'package:injectable/injectable.dart';
+import 'package:mockito/mockito.dart';
 
 abstract class GithubClientDelegate {
   void didRefreshToken(String accessToken, String refreshToken, int accessTokenExpiresIn);
@@ -20,7 +21,9 @@ abstract class NetworkExecutor {
   Future<dio.Response> requestWith(Request request);
 }
 
-@Injectable(as: ApiClient)
+@prod
+@dev
+@injectable
 class GithubApiClient extends ApiClient implements DioGithubInterceptorsDidRefreshToken, NetworkExecutor {
   DioGithubInterceptors oauth2Interceptor;
 
@@ -59,12 +62,8 @@ class GithubApiClient extends ApiClient implements DioGithubInterceptorsDidRefre
   }
 
   @override
-  String baseURL;
-
-  @override
-  Future<dio.Response> requestWith(Request request) {
-    // TODO: implement requestWith
-    throw UnimplementedError();
+  set baseURL(String _baseURL) {
+    // TODO: implement baseURL
   }
 
   @override
@@ -72,3 +71,7 @@ class GithubApiClient extends ApiClient implements DioGithubInterceptorsDidRefre
     // TODO: implement setDefaultHeader
   }
 }
+
+@dev
+@injectable
+class MockApiClient extends Mock implements GithubApiClient {}

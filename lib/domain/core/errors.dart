@@ -1,0 +1,1 @@
+class NoNetworkConnectionError extends Error {}

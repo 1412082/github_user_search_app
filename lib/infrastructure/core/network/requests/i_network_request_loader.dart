@@ -1,5 +1,4 @@
-import 'package:github_user_search_app/infrastructure/network/errors/network_error.dart';
-import 'package:github_user_search_app/infrastructure/network/requests/network_request.dart';
+import 'package:github_user_search_app/infrastructure/core/network/network.dart';
 import 'package:uuid/uuid.dart';
 
 abstract class INetworkRequestLoaderObserver {

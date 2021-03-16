@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart' as dio;
-import 'package:github_user_search_app/infrastructure/network/base/api_client.dart';
+import 'package:github_user_search_app/infrastructure/core/network/network.dart';
 
 /// Wrapper of [dio.ResponseType]
 enum ResponseType {

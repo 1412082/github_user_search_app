@@ -1,12 +1,17 @@
 import 'dart:async';
-import 'package:dio/dio.dart';
-import 'package:github_user_search_app/infrastructure/log/logger.dart';
-import 'package:github_user_search_app/infrastructure/network/errors/network_error.dart';
-import 'package:github_user_search_app/infrastructure/network/github_api_client.dart';
-import 'package:github_user_search_app/infrastructure/network/requests/i_network_request_loader.dart';
-import 'package:github_user_search_app/infrastructure/network/requests/network_request.dart';
-import 'package:rxdart/rxdart.dart';
 
+import 'package:dio/dio.dart';
+import 'package:github_user_search_app/infrastructure/core/log/logger.dart';
+import 'package:github_user_search_app/infrastructure/core/network/network.dart';
+import 'package:github_user_search_app/infrastructure/core/network/requests/i_network_request_loader.dart';
+import 'package:github_user_search_app/infrastructure/core/network/github_api_client.dart';
+import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:mockito/mockito.dart';
+
+@prod
+@dev
+@LazySingleton(as: INetworkRequestLoader)
 class NetworkRequestLoader implements INetworkRequestLoader {
   final NetworkExecutor _executor;
   final Map<String, INetworkRequestLoaderObserver> _observers = <String, INetworkRequestLoaderObserver>{};
@@ -135,3 +140,7 @@ class NetworkRequestLoader implements INetworkRequestLoader {
     _observers.remove(observer.networkRequestObserverId);
   }
 }
+
+@test
+@LazySingleton(as: INetworkRequestLoader)
+class MockNetworkLoader extends Mock implements NetworkRequestLoader {}
